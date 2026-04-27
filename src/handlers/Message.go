@@ -26,6 +26,19 @@ func Message(b *gotgbot.Bot, ctx *ext.Context) error {
 		return nil
 	}
 
+	if isCommandMessage(ctx.EffectiveMessage) {
+		return nil
+	}
+
+	isVerified, err := helpers.HasRequiredBotVerification(b, ctx.EffectiveUser.Id)
+	if err != nil {
+		return err
+	}
+
+	if !isVerified {
+		return nil
+	}
+
 	var handleMessage func(int) error
 
 	handleMessage = func(depth int) error {
@@ -122,6 +135,20 @@ func Message(b *gotgbot.Bot, ctx *ext.Context) error {
 	}
 
 	return handleMessage(1)
+}
+
+func isCommandMessage(message *gotgbot.Message) bool {
+	if message == nil {
+		return false
+	}
+
+	for _, entity := range message.Entities {
+		if entity.Type == "bot_command" && entity.Offset == 0 {
+			return true
+		}
+	}
+
+	return false
 }
 
 func handleNoTopic(

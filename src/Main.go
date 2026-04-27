@@ -14,13 +14,14 @@ import (
 	"feedbackBot/src/helpers"
 	"feedbackBot/src/middlewares"
 	"fmt"
+	"log"
+	"net/http"
+	"time"
+
 	"github.com/PaulSonOfLars/gotgbot/v2"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext"
 	updateHandlers "github.com/PaulSonOfLars/gotgbot/v2/ext/handlers"
 	"github.com/PaulSonOfLars/gotgbot/v2/ext/handlers/filters/message"
-	"log"
-	"net/http"
-	"time"
 )
 
 func main() {
@@ -33,7 +34,7 @@ func main() {
 			Client: http.Client{},
 			DefaultRequestOpts: &gotgbot.RequestOpts{
 				Timeout: 5 * time.Second,
-				APIURL:  gotgbot.DefaultAPIURL,
+				APIURL:  config.CurrentConfig.TelegramApiURL,
 			},
 		},
 	})

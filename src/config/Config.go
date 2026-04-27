@@ -23,6 +23,11 @@ type Configuration struct {
 		Enabled bool   `json:"enabled"`
 		Message string `json:"message"`
 	} `json:"welcome"`
+	Verification struct {
+		BotUserId              int64  `json:"bot_user_id"`
+		VerifiedStartMessage   string `json:"verified_start_message"`
+		UnverifiedStartMessage string `json:"unverified_start_message"`
+	} `json:"verification"`
 	IsProtectedDefault bool `json:"is_protected_default"`
 	LanguageFilter     struct {
 		Enabled            bool     `json:"enabled"`
@@ -30,7 +35,8 @@ type Configuration struct {
 		Message            string   `json:"message"`
 		ErrorRateLimit     int64    `json:"error_rate_limit"`
 	} `json:"language_filter"`
-	DiscloseErrorInternals bool `json:"disclose_error_internals"`
+	DiscloseErrorInternals bool   `json:"disclose_error_internals"`
+	TelegramApiURL         string `json:"telegram_api_url" default:"https://api.telegram.org"`
 }
 
 // CurrentConfig - stores the current configuration
@@ -63,6 +69,18 @@ func LoadConfig(filename string) {
 	// Check welcome message configuration
 	if CurrentConfig.Welcome.Enabled && CurrentConfig.Welcome.Message == "" {
 		panic("[!!!CONFIGURATION ERROR!!!] Welcome message is enabled, but not set.")
+	}
+
+	if CurrentConfig.Verification.BotUserId == 0 {
+		panic("[!!!CONFIGURATION ERROR!!!] verification.bot_user_id is not set.")
+	}
+
+	if CurrentConfig.Verification.VerifiedStartMessage == "" {
+		panic("[!!!CONFIGURATION ERROR!!!] verification.verified_start_message is not set.")
+	}
+
+	if CurrentConfig.Verification.UnverifiedStartMessage == "" {
+		panic("[!!!CONFIGURATION ERROR!!!] verification.unverified_start_message is not set.")
 	}
 
 	// Check language filter configuration

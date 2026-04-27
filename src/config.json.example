@@ -7,7 +7,12 @@
     "enabled": true,
     "message": "Hello! Write a message and I'll send it to my owners."
   },
-  "is_protected_default": false
+  "verification": {
+    "bot_user_id": 1234567890,
+    "verified_start_message": "Hello! Your verification is active. Write a message and I'll send it to my owners.",
+    "unverified_start_message": "Hello! To contact support, you need verification from the required bot first."
+  },
+  "is_protected_default": false,
   "language_filter": {
         "enabled": true,
         "forbidden_languages": ["en", "ru"],
@@ -15,4 +20,5 @@
         "error_rate_limit": 60
     },
   "disclose_error_internals": false,
+  "telegram_api_url": "https://api.telegram.org"
 }
